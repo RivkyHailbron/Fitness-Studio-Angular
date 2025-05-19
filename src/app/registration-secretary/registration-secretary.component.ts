@@ -25,7 +25,7 @@ export interface CourseRegistration {
 export class RegistrationSecretaryComponent {
     gridOptions = {
         enableRtl: true,
-   
+
 
     }
     paginationAutoPageSize = true;
@@ -37,20 +37,26 @@ export class RegistrationSecretaryComponent {
     };
 
     colDefs: ColDef[] = [
-        { field: "firstName", headerName: "שם פרטי" },
-        { field: "lastName", headerName: "שם משפחה" },
-        { field: "phone", headerName: "טלפון" },
-        { field: "id", headerName: "תעודת זהות" },
-        { field: "lessonName", headerName: "שם השיעור" },
-        { field: "price", headerName: "מחיר" },
+        { field: "firstName", headerName: "שם פרטי", width: 110 },
+        { field: "lastName", headerName: "שם משפחה", width: 120 },
+        { field: "phone", headerName: "טלפון", width: 130 },
+        { field: "id", headerName: "תעודת זהות", width: 110 },
+        { field: "lessonName", headerName: "שם השיעור", width: 160 },
+        { field: "price", headerName: "מחיר", width: 110 },
         {
-            field: "isPaid", headerName: "שולם",
+            field: "isPaid", headerName: "שולם", width: 110,
             cellRenderer: (params: any) => {
-                return params.data.isPaid ? 'כן' : 'לא';
+                if (params.data.isPaid)
+                    return `<span style="color: green;">כן</span>`;
+                else
+                    return `<span style="color: red;">לא</span>`;
+            },
+            cellStyle: params => {
+                return { backgroundColor: params.data.isPaid ? 'green' : 'red' };
             }
         },
         {
-            field: "details", headerName: "פרטים",
+            field: "details", headerName: "פרטים", width: 110,
             cellRenderer: (params: any) => {
                 const button = document.createElement('button');
                 button.innerText = 'Details';
@@ -61,6 +67,7 @@ export class RegistrationSecretaryComponent {
             }
         }
     ];
+    
     rowData: CourseRegistration[] = [
         {
             firstName: "מאיה",
