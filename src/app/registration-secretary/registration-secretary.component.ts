@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AgGridModule  } from 'ag-grid-angular'; // Angular Data Grid Component
+import { AgGridModule } from 'ag-grid-angular'; // Angular Data Grid Component
 import { ColDef } from 'ag-grid-community'; // Column Definition Interface
 import { ModuleRegistry } from 'ag-grid-community';
 import { ClientSideRowModelModule } from 'ag-grid-community';
@@ -18,26 +18,50 @@ export interface CourseRegistration {
 @Component({
     selector: 'app-registration-secretary',
     standalone: true,
-    imports: [AgGridModule ],
+    imports: [AgGridModule],
     templateUrl: './registration-secretary.component.html',
     styleUrls: ['./registration-secretary.component.css']
 })
 export class RegistrationSecretaryComponent {
     gridOptions = {
-        enableRtl: true
+        enableRtl: true,
+   
+
     }
     paginationAutoPageSize = true;
-  
+
+    defaultColDef = {
+        sortable: true,
+        filter: true,
+        resizable: true,
+    };
+
     colDefs: ColDef[] = [
-        { field: "firstName", headerName: "שם פרטי", sortable: true, filter: true },
-        { field: "lastName", headerName: "שם משפחה", sortable: true, filter: true },
-        { field: "phone", headerName: "טלפון", sortable: true, filter: true },
-        { field: "id", headerName: "תעודת זהות", sortable: true, filter: true },
-        { field: "lessonName", headerName: "שם השיעור", sortable: true, filter: true },
-        { field: "price", headerName: "מחיר", sortable: true, filter: true },
-        { field: "isPaid", headerName: "שולם?", sortable: true, filter: true }
+        { field: "firstName", headerName: "שם פרטי" },
+        { field: "lastName", headerName: "שם משפחה" },
+        { field: "phone", headerName: "טלפון" },
+        { field: "id", headerName: "תעודת זהות" },
+        { field: "lessonName", headerName: "שם השיעור" },
+        { field: "price", headerName: "מחיר" },
+        {
+            field: "isPaid", headerName: "שולם",
+            cellRenderer: (params: any) => {
+                return params.data.isPaid ? 'כן' : 'לא';
+            }
+        },
+        {
+            field: "details", headerName: "פרטים",
+            cellRenderer: (params: any) => {
+                const button = document.createElement('button');
+                button.innerText = 'Details';
+                button.addEventListener('click', () => {
+                    alert(`פרטי ההרשמה: \nשם פרטי: ${params.data.firstName} \nשם משפחה: ${params.data.lastName} \nטלפון: ${params.data.phone} \nתעודת זהות: ${params.data.id} \nשם השיעור: ${params.data.lessonName} \nמחיר: ${params.data.price} \nשולם: ${params.data.isPaid ? 'כן' : 'לא'}`);
+                });
+                return button;
+            }
+        }
     ];
-    rowData :CourseRegistration[]= [
+    rowData: CourseRegistration[] = [
         {
             firstName: "מאיה",
             lastName: "כהן",
