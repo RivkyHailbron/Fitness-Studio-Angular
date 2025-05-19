@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { User, UserService } from '../user.service';
 
 @Component({
     selector: 'app-login',
@@ -13,27 +13,32 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
 
 export class LoginComponent implements OnInit {
     loginForm: FormGroup;
-    constructor(private fb: FormBuilder, private http: HttpClient) {
+    constructor(private fb: FormBuilder, private userService: UserService) {
         this.loginForm = this.fb.group({
             username: ['', Validators.required],
             password: ['', [Validators.required, Validators.minLength(6)]]
         });
     }
-    users :any[] = [];
-    ngOnInit(): void {
-        this.http.get<any[]>('assets/users.json').subscribe((data: any) => {
-            this.users = data;
-            console.log('🔵 נתוני המשתמשים:', this.users);
-        });
-
+    users: User[] = [];
+    ngOnInit() {
+        this.users = this.userService.getUsers();
     }
+    
 
     onSubmit() {
         if (this.loginForm.valid) {
-            console.log('🟢 התחברת בהצלחה:', this.loginForm.value);
-            // אפשר להמשיך עם שליחת הנתונים לשרת
-        } else {
-            console.log('🔴 הטופס לא תקין');
+            const { username, password } = this.loginForm.value;
+            const user = this.users.find(user => user.name === username && user.password === password);
+            if (user) {
+                if (user.role === 'מזכירת רישום') {
+                   window.location.href ='/registration'; 
+                } else if (user.role === 'מורה להתעמלות') {
+                    window.location.href = '/teacher';
+                }
+            } else {
+                alert('Invalid username or password');
+            }
+
         }
     }
 }

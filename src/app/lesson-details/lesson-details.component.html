@@ -1,0 +1,11 @@
+<p>lesson-details works!</p>
+
+<h1 mat-dialog-title>{{ data.lesson.name }}</h1>
+<div mat-dialog-content>
+    <p>מורה: {{ data.lesson.teacherName }}</p>
+    <p>תאריך התחלת הקורס: {{ data.lesson.startDate }}</p>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="close()">סגור</button>
+</div>
+

@@ -1,0 +1,15 @@
+<p>gymteacher works!</p>
+<mat-grid-list cols="3" rowHeight="200px" >
+    <mat-grid-tile *ngFor="let lesson of lessons" >
+        <mat-card [ngClass]="{'highlight': isStarted(lesson.startDate)}" (click)="goToLessonDetails(lesson)">
+            <mat-card-header>
+                <mat-card-title>{{ lesson.name }}</mat-card-title>
+                <mat-card-subtitle>תאריך התחלת הקורס :{{ lesson.startDate }}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+                <p>מורה: {{ lesson.teacherName }}</p>
+            </mat-card-content>
+        </mat-card>
+     </mat-grid-tile>
+</mat-grid-list>
+
